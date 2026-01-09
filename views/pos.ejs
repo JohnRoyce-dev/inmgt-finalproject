@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Point of Sale | Inventory & Sales</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <style>
+        :root { 
+            --purple-theme: #5d3fd3; 
+            --bg-light: #f8f9fc;
+            --text-main: #4e5154;
+            --text-muted: #6e707e;
+            --font-size-standard: 14px; 
+        }
+
+        body { 
+            background-color: var(--bg-light); 
+            font-family: 'Inter', sans-serif; 
+            font-size: var(--font-size-standard);
+            color: var(--text-main);
+            margin: 0; 
+            display: flex; 
+        }
+
+        /* Unified Sidebar */
+        .sidebar { 
+            width: 260px; 
+            height: 100vh; 
+            background: #fff; 
+            position: fixed; 
+            border-right: 1px solid #eee; 
+            padding-top: 20px; 
+            z-index: 1000; 
+        }
+        .sidebar-brand { padding: 0 25px 30px; }
+        .sidebar-brand h5 { font-size: 18px; font-weight: 700; color: var(--purple-theme); }
+
+        .nav-link { 
+            color: var(--text-muted); 
+            padding: 12px 25px; 
+            display: flex; 
+            align-items: center; 
+            text-decoration: none; 
+            font-size: var(--font-size-standard); 
+            font-weight: 500;
+            border-radius: 0 50px 50px 0; 
+            margin-right: 15px; 
+            transition: 0.2s;
+        }
+        .nav-link i { margin-right: 15px; width: 20px; text-align: center; font-size: 1.1rem; }
+        .nav-link:hover { color: var(--purple-theme); background: #f4f0ff; }
+        .nav-link.active { background: var(--purple-theme); color: white !important; }
+
+        /* Main Content Layout */
+        .header-container { margin-left: 260px; width: calc(100% - 260px); }
+        .top-nav { 
+            height: 70px; 
+            background: white; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            padding: 0 40px; 
+            border-bottom: 1px solid #eee; 
+        }
+        .main-content { padding: 40px; }
+
+        /* POS Specific Styling */
+        .card { border: none; border-radius: 15px; box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.05); background: white; margin-bottom: 20px; }
+        .btn-purple { background-color: var(--purple-theme); color: white; border: none; width: 100%; padding: 12px; border-radius: 8px; font-weight: 600; font-size: 14px; }
+        .btn-purple:hover { background-color: #4b32b3; }
+        .btn-success-custom { background-color: #28a745; color: white; border: none; width: 100%; padding: 12px; border-radius: 8px; font-weight: 600; }
+        
+        .table thead th { font-size: 12px; text-transform: uppercase; color: var(--text-muted); border-bottom: 2px solid #f8f9fc; }
+        .form-label { font-size: 13px; font-weight: 600; color: var(--text-muted); }
+        .logout-btn { border: 1px solid #ddd; padding: 6px 16px; border-radius: 8px; text-decoration: none; color: #333; font-size: 13px; }
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <div class="sidebar-brand">
+        <h5 class="mb-0">Inventory & Sales</h5>
+        <small class="text-muted">Management System</small>
+    </div>
+    <nav class="nav flex-column">
+        <a href="/" class="nav-link"><i class="bi bi-grid-fill"></i> Dashboard</a>
+        <a href="/products" class="nav-link"><i class="bi bi-box-seam"></i> Products</a>
+        <a href="/suppliers" class="nav-link"><i class="bi bi-truck"></i> Suppliers</a>
+        <a href="/pos" class="nav-link active"><i class="bi bi-cart3"></i> POS</a>
+        <a href="/inventory" class="nav-link"><i class="bi bi-house-door"></i> Inventory</a>
+        <a href="/barcode" class="nav-link"><i class="bi bi-qr-code-scan"></i> Barcode Scanner</a>
+        <a href="/transactions" class="nav-link"><i class="bi bi-journal-text"></i> Transactions</a>
+        <a href="/reports" class="nav-link"><i class="bi bi-graph-up-arrow"></i> Reports</a>
+        <a href="/users" class="nav-link"><i class="bi bi-people"></i> Users</a>
+    </nav>
+</div>
+
+<div class="header-container">
+    <div class="top-nav">
+        <h5 class="mb-0 fw-bold">Point of Sale</h5>
+        <div class="d-flex align-items-center gap-3">
+            <div class="top-nav">
+        <div class="d-flex align-items-center gap-3">
+            <span class="text-muted" style="font-size: 13px;">Welcome, <strong>System Admin</strong></span>
+            <a href="/logout" class="btn btn-sm btn-outline-secondary px-3" style="font-size: 12px;">Logout</a>
+        </div>
+    </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="row g-4">
+            <div class="col-md-8">
+                <div class="card p-4">
+                    <h6 class="fw-bold mb-4">Add Products to Cart</h6>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Search Product</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-0"><i class="bi bi-search"></i></span>
+                            <input type="text" id="searchInput" class="form-control bg-light border-0" placeholder="Scan barcode or type name...">
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-md-8">
+                            <label class="form-label">Select Product</label>
+                            <select id="productSelect" class="form-select bg-light border-0">
+                                <option value="">Choose a product...</option>
+                                <% products.forEach(product => { %>
+                                    <option value="<%= product.id %>" data-price="<%= product.price %>" data-name="<%= product.product_name %>">
+                                        <%= product.product_name %> - ₱<%= product.price %>
+                                    </option>
+                                <% }); %>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Quantity</label>
+                            <input type="number" id="productQty" class="form-control bg-light border-0" value="1" min="1">
+                        </div>
+                    </div>
+
+                    <button class="btn btn-purple mb-4" onclick="addToCart()">
+                        <i class="bi bi-cart-plus me-2"></i> Add to Cart
+                    </button>
+
+                    <h6 class="fw-bold mb-3">Current Cart</h6>
+                    <div class="table-responsive">
+                        <table class="table align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Qty</th>
+                                    <th>Subtotal</th>
+                                    <th class="text-end">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cartTable">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card p-4">
+                    <h6 class="fw-bold mb-4">Order Summary</h6>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Subtotal</span>
+                        <span id="subtotalDisplay">₱0.00</span>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between mb-4">
+                        <span class="h5 fw-bold">Total Amount</span>
+                        <span class="h5 fw-bold text-primary" id="totalDisplay">₱0.00</span>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="form-label">Cash Received</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-0">₱</span>
+                            <input type="number" id="payAmount" class="form-control bg-light border-0" placeholder="0.00">
+                        </div>
+                    </div>
+
+                    <button class="btn btn-success-custom py-3" onclick="checkout()">
+                        <i class="bi bi-check2-circle me-2"></i> Complete Transaction
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let cart = [];
+    let grandTotal = 0;
+
+    function addToCart() {
+        const select = document.getElementById('productSelect');
+        const option = select.options[select.selectedIndex];
+        if(!option.value) return;
+
+        const product = {
+            id: option.value,
+            name: option.getAttribute('data-name'),
+            price: parseFloat(option.getAttribute('data-price')),
+            qty: parseInt(document.getElementById('productQty').value)
+        };
+
+        // Check if already in cart
+        const existing = cart.find(item => item.id === product.id);
+        if(existing) {
+            existing.qty += product.qty;
+        } else {
+            cart.push(product);
+        }
+        
+        updateCartTable();
+    }
+
+    function updateCartTable() {
+        const tbody = document.getElementById('cartTable');
+        tbody.innerHTML = '';
+        grandTotal = 0;
+
+        cart.forEach((item, index) => {
+            const subtotal = item.price * item.qty;
+            grandTotal += subtotal;
+            tbody.innerHTML += `
+                <tr>
+                    <td class="fw-bold">${item.name}</td>
+                    <td>₱${item.price.toFixed(2)}</td>
+                    <td><span class="badge bg-light text-dark">${item.qty}</span></td>
+                    <td class="fw-bold">₱${subtotal.toFixed(2)}</td>
+                    <td class="text-end">
+                        <button class="btn btn-sm btn-outline-danger border-0" onclick="removeItem(${index})">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
+
+        document.getElementById('totalDisplay').innerText = '₱' + grandTotal.toFixed(2);
+        document.getElementById('subtotalDisplay').innerText = '₱' + grandTotal.toFixed(2);
+    }
+
+    function removeItem(index) {
+        cart.splice(index, 1);
+        updateCartTable();
+    }
+
+    function checkout() {
+        if(cart.length === 0) return alert("Cart is empty!");
+        const pay = parseFloat(document.getElementById('payAmount').value);
+        if(isNaN(pay) || pay < grandTotal) return alert("Please enter a valid payment amount!");
+        
+        const change = pay - grandTotal;
+        alert("Transaction Successful!\nTotal: ₱" + grandTotal.toFixed(2) + "\nChange: ₱" + change.toFixed(2));
+        location.reload();
+    }
+</script>
+</body>
+</html>

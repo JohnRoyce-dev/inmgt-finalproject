@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        :root { --purple-theme: #5d3fd3; --bg-light: #f8f9fc; --text-main: #4e5154; --text-muted: #6e707e; --font-size-base: 14px; }
+        body { background-color: var(--bg-light); font-family: 'Inter', sans-serif; font-size: var(--font-size-base); color: var(--text-main); margin: 0; display: flex; }
+        .sidebar { width: 260px; height: 100vh; background: #fff; position: fixed; border-right: 1px solid #eee; padding-top: 20px; z-index: 1000; }
+        .sidebar-brand { padding: 0 25px 30px; }
+        .sidebar-brand h5 { font-size: 18px; font-weight: 700; color: var(--purple-theme); }
+        .nav-link { color: var(--text-muted); padding: 12px 25px; display: flex; align-items: center; text-decoration: none; font-size: 14px; font-weight: 500; border-radius: 0 50px 50px 0; margin-right: 15px; transition: 0.2s; }
+        .nav-link i { margin-right: 15px; width: 20px; text-align: center; font-size: 1.1rem; }
+        .nav-link:hover { color: var(--purple-theme); background: #f4f0ff; }
+        .nav-link.active { background: var(--purple-theme); color: white !important; }
+        .header-container { margin-left: 260px; width: calc(100% - 260px); }
+        .top-nav { height: 70px; background: white; display: flex; align-items: center; justify-content: space-between; padding: 0 40px; border-bottom: 1px solid #eee; }
+        .logout-btn { border: 1px solid #ddd; padding: 6px 16px; border-radius: 8px; text-decoration: none; color: #333; font-size: 13px; font-weight: 500; }
+        .main-content { padding: 40px; }
+        .card { border: none; border-radius: 15px; box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1); background: white; }
+        .btn-purple { background-color: var(--purple-theme); color: white; border-radius: 8px; padding: 8px 20px; border: none; font-weight: 500; }
+        .table thead th { font-size: 12px; text-transform: uppercase; color: var(--text-muted); border: none; }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <h5 class="mb-0">Inventory & Sales</h5>
+            <small class="text-muted">Management System</small>
+        </div>
+        <nav class="nav flex-column">
+            <a href="/" class="nav-link"><i class="bi bi-grid-fill"></i> Dashboard</a>
+            <a href="/products" class="nav-link active"><i class="bi bi-box-seam"></i> Products</a>
+            <a href="/suppliers" class="nav-link"><i class="bi bi-truck"></i> Suppliers</a>
+            <a href="/pos" class="nav-link"><i class="bi bi-cart3"></i> POS</a>
+            <a href="/inventory" class="nav-link"><i class="bi bi-house-door"></i> Inventory</a>
+            <a href="/barcode" class="nav-link"><i class="bi bi-qr-code-scan"></i> Barcode Scanner</a>
+            <a href="/transactions" class="nav-link"><i class="bi bi-journal-text"></i> Transactions</a>
+            <a href="/reports" class="nav-link"><i class="bi bi-graph-up-arrow"></i> Reports</a>
+            <a href="/users" class="nav-link"><i class="bi bi-people"></i> Users</a>
+        </nav>
+    </div>
+    <div class="header-container">
+        <div class="top-nav">
+            <h5 class="mb-0 fw-bold">Product Management</h5>
+            <div class="top-nav">
+        <div class="d-flex align-items-center gap-3">
+            <span class="text-muted" style="font-size: 13px;">Welcome, <strong>System Admin</strong></span>
+            <a href="/logout" class="btn btn-sm btn-outline-secondary px-3" style="font-size: 12px;">Logout</a>
+        </div>
+    </div>
+        </div>
+        <div class="main-content">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="fw-bold">Products List</h3>
+                <button class="btn btn-purple"><i class="bi bi-plus-lg me-2"></i>Add Product</button>
+            </div>
+            <div class="card p-4">
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead>
+                            <tr><th>Product Name</th><th>Barcode</th><th>Category</th><th>Price</th><th>Stock</th><th>Actions</th></tr>
+                        </thead>
+                        <tbody>
+                            <% products.forEach(product => { %>
+                            <tr>
+                                <td class="fw-bold"><%= product.product_name %></td>
+                                <td class="text-muted"><%= product.barcode %></td>
+                                <td><%= product.category %></td>
+                                <td>₱<%= product.price %></td>
+                                <td><%= product.stock %></td>
+                                <td><button class="btn btn-sm btn-light border"><i class="bi bi-pencil"></i></button></td>
+                            </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

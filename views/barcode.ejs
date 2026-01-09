@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barcode Scanner | Inventory & Sales</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <style>
+        :root { 
+            --purple-theme: #5d3fd3; 
+            --bg-light: #f8f9fc;
+            --text-main: #4e5154;
+            --text-muted: #6e707e;
+            --font-size-standard: 14px; 
+        }
+
+        body { 
+            background-color: var(--bg-light); 
+            font-family: 'Inter', sans-serif; 
+            font-size: var(--font-size-standard);
+            color: var(--text-main);
+            margin: 0; 
+            display: flex; 
+        }
+
+        /* Unified Sidebar */
+        .sidebar { 
+            width: 260px; 
+            height: 100vh; 
+            background: #fff; 
+            position: fixed; 
+            border-right: 1px solid #eee; 
+            padding-top: 20px; 
+            z-index: 1000; 
+        }
+        .sidebar-brand { padding: 0 25px 30px; }
+        .sidebar-brand h5 { font-size: 18px; font-weight: 700; color: var(--purple-theme); }
+
+        .nav-link { 
+            color: var(--text-muted); 
+            padding: 12px 25px; 
+            display: flex; 
+            align-items: center; 
+            text-decoration: none; 
+            font-size: var(--font-size-standard); 
+            font-weight: 500;
+            border-radius: 0 50px 50px 0; 
+            margin-right: 15px; 
+            transition: 0.2s;
+        }
+        .nav-link i { margin-right: 15px; width: 20px; text-align: center; font-size: 1.1rem; }
+        .nav-link:hover { color: var(--purple-theme); background: #f4f0ff; }
+        .nav-link.active { background: var(--purple-theme); color: white !important; }
+
+        /* Main Content Layout */
+        .header-container { margin-left: 260px; width: calc(100% - 260px); }
+        .top-nav { 
+            height: 70px; 
+            background: white; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            padding: 0 40px; 
+            border-bottom: 1px solid #eee; 
+        }
+
+        .main-content { padding: 40px; }
+        .card { border: none; border-radius: 15px; box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.05); background: white; min-height: 450px; }
+        
+        /* Scanner Styling */
+        .scanner-window { 
+            background: #f1f3f9; 
+            height: 250px; 
+            border-radius: 12px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            border: 2px dashed #d1d9e6;
+        }
+        .scan-placeholder { font-size: 2.5rem; color: var(--purple-theme); opacity: 0.5; }
+        
+        .btn-purple { background-color: var(--purple-theme); color: white; border-radius: 8px; border: none; padding: 10px 24px; font-weight: 500; }
+        .btn-purple:hover { background-color: #4b32b3; color: white; }
+        
+        .logout-btn { border: 1px solid #ddd; padding: 6px 16px; border-radius: 8px; text-decoration: none; color: #333; font-size: 13px; }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            <h5 class="mb-0">Inventory & Sales</h5>
+            <small class="text-muted">Management System</small>
+        </div>
+        <nav class="nav flex-column">
+            <a href="/" class="nav-link"><i class="bi bi-grid-fill"></i> Dashboard</a>
+            <a href="/products" class="nav-link"><i class="bi bi-box-seam"></i> Products</a>
+            <a href="/suppliers" class="nav-link"><i class="bi bi-truck"></i> Suppliers</a>
+            <a href="/pos" class="nav-link"><i class="bi bi-cart3"></i> POS</a>
+            <a href="/inventory" class="nav-link"><i class="bi bi-house-door"></i> Inventory</a>
+            <a href="/barcode" class="nav-link active"><i class="bi bi-qr-code-scan"></i> Barcode Scanner</a>
+            <a href="/transactions" class="nav-link"><i class="bi bi-journal-text"></i> Transactions</a>
+            <a href="/reports" class="nav-link"><i class="bi bi-graph-up-arrow"></i> Reports</a>
+            <a href="/users" class="nav-link"><i class="bi bi-people"></i> Users</a>
+        </nav>
+    </div>
+
+    <div class="header-container">
+        <div class="top-nav">
+            <h5 class="mb-0 fw-bold" style="font-size: 18px;">Barcode Scanner</h5>
+            <div class="d-flex align-items-center gap-3">
+                <div class="text-end">
+                   <span class="text-muted" style="font-size: 13px;">Welcome, <strong>System Admin</strong></span>
+                    <a href="/logout" class="btn btn-sm btn-outline-secondary px-3" style="font-size: 12px;">Logout</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="row g-4">
+                <div class="col-md-7">
+                    <div class="card p-4">
+                        <h6 class="fw-bold mb-4" style="font-size: 14px;">Live Scanner Preview</h6>
+                        <div class="scanner-window mb-4">
+                            <i class="bi bi-camera scan-placeholder mb-2"></i>
+                            <div class="fw-bold text-muted">Awaiting Camera Access...</div>
+                            <small class="text-muted">Connect a USB scanner or use camera</small>
+                        </div>
+                        
+                        <label class="form-label small fw-bold text-muted mb-2">Manual Barcode Entry</label>
+                        <div class="input-group mb-4">
+                            <span class="input-group-text bg-light border-0"><i class="bi bi-barcode"></i></span>
+                            <input type="text" id="barcodeInput" class="form-control bg-light border-0" placeholder="Type or scan barcode...">
+                            <button class="btn btn-purple" type="button" onclick="searchBarcode()">
+                                <i class="bi bi-search me-1"></i> Check
+                            </button>
+                        </div>
+                        
+                        <div class="p-3 bg-light rounded-3">
+                            <div class="small fw-bold text-muted mb-1">Quick Test Barcodes:</div>
+                            <code class="text-primary" style="cursor: pointer;" onclick="document.getElementById('barcodeInput').value='480123456789'">480123456789</code>, 
+                            <code class="text-primary ms-2" style="cursor: pointer;" onclick="document.getElementById('barcodeInput').value='1234567890123'">1234567890123</code>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-5">
+                    <div class="card p-4 d-flex flex-column align-items-center justify-content-center text-center">
+                        <h6 class="fw-bold mb-4 w-100 text-start" style="font-size: 14px;">Product Details</h6>
+                        <div id="productDisplay">
+                            <i class="bi bi-qr-code scan-placeholder mb-3"></i>
+                            <p class="text-muted" style="font-size: 13px;">Once a barcode is identified, product information will appear here.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    function searchBarcode() {
+        const barcode = document.getElementById('barcodeInput').value;
+        if (!barcode) return;
+
+        // Fetch product details
+        fetch(`/api/product/${barcode}`)
+            .then(res => res.json())
+            .then(data => {
+                const display = document.getElementById('productDisplay');
+                if (data.success) {
+                    display.innerHTML = `
+                        <div class="text-start w-100 p-2">
+                            <div class="mb-4">
+                                <small class="text-muted d-block uppercase fw-bold" style="font-size: 10px;">PRODUCT NAME</small>
+                                <h4 class="fw-bold text-dark mb-0">${data.product.product_name}</h4>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <small class="text-muted d-block fw-bold" style="font-size: 10px;">CATEGORY</small>
+                                    <span>${data.product.category}</span>
+                                </div>
+                                <div class="col-6">
+                                    <small class="text-muted d-block fw-bold" style="font-size: 10px;">UNIT PRICE</small>
+                                    <span class="fw-bold">₱${data.product.price}</span>
+                                </div>
+                            </div>
+
+                            <div class="row mb-4">
+                                <div class="col-6">
+                                    <small class="text-muted d-block fw-bold" style="font-size: 10px;">CURRENT STOCK</small>
+                                    <span class="h5 fw-bold">${data.product.stock}</span>
+                                </div>
+                                <div class="col-6">
+                                    <small class="text-muted d-block fw-bold" style="font-size: 10px;">STATUS</small>
+                                    <span class="badge ${data.product.stock > 5 ? 'bg-success' : 'bg-danger'} rounded-pill">
+                                        ${data.product.stock > 5 ? 'In Stock' : 'Low Stock'}
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <hr>
+                            <a href="/products" class="btn btn-outline-secondary w-100 btn-sm">Edit Product</a>
+                        </div>
+                    `;
+                } else {
+                    display.innerHTML = `
+                        <i class="bi bi-exclamation-circle text-danger mb-3" style="font-size: 2rem;"></i>
+                        <p class="text-danger fw-bold">Product not found</p>
+                        <p class="text-muted small">This barcode is not registered in the system.</p>
+                        <a href="/products" class="btn btn-purple btn-sm">Add New Product</a>
+                    `;
+                }
+            });
+    }
+</script>
+
+</body>
+</html>
